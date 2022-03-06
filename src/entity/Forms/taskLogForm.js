@@ -20,13 +20,17 @@ export const TaskLogForm = {
             field_type: "input",
             field_name: 'end_time',
             field_label: "End Time"
+        },
+        { 
+            field_type: "submit_button",
+            field_name: "Add Task Log"
         }
     ],
     initialValues: {
         description: '',
-        time_spent: 0,
-        start_time: 0,
-        end_time: 0
+        time_spent: '',
+        start_time: '',
+        end_time: ''
     }
 }
 

@@ -20,13 +20,13 @@ import axios from 'axios';
 import { constants } from 'constants/app';
 import {axiosWrapper} from '../../../helpers/axios_wrapper';
 import DynamicCrudForm from "./dynamicCrudForm";
+import {formIntitalValues} from "../../../parsers/FormParser/formParser";
 
 const show_fields = ["Description", "Time Spent", "Start Time", "End Time", "Created At"];
 const database_fields = ["description", "time_spent", "start_time", "end_time", "created_at"];
 const all_fields = [...database_fields, "id"];
 const form_type = "task_log";
-const form_name = "Task Log";
-
+const formInitValues = formIntitalValues(form_type);
 
 const useStyles = makeStyles(styles);
 const Transition = React.forwardRef(function Transition(props, ref) {
@@ -224,7 +224,7 @@ const refreshItems = () => {
                     id="classic-modal-slide-description"
                     className={classes.modalBody}
                   >
-                    <DynamicCrudForm closeModal={closeModal} form_type={form_type} formData={editData.editFormData} />
+                    <DynamicCrudForm closeModal={closeModal} form_type={form_type} formData={editData.editFormData} formInitValues={formInitValues}/>
                   </DialogContent>
                   <DialogActions className={classes.modalFooter}>
                     <Button

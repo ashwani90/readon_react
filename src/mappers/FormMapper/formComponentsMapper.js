@@ -1,5 +1,6 @@
 import React from "react";
 import CustomInput from "components/CustomInput/CustomInput.js";
+import Button from "components/CustomButtons/Button.js";
 
 
 const formComponentMapper = (component,formik) => {
@@ -17,6 +18,9 @@ const formComponentMapper = (component,formik) => {
                 }}
               />
         );
+    }
+    if (component.field_type == "submit_button") {
+      return (<Button type="submit" variant="outlined">{component.field_name}</Button>);
     }
 }
 
