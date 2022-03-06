@@ -29,7 +29,7 @@ const useStyles = makeStyles(styles);
 const Transition = React.forwardRef(function Transition(props, ref) {
     return <Slide direction="down" ref={ref} {...props} />;
   });
-  
+
   Transition.displayName = "Transition";
 
 
@@ -41,16 +41,20 @@ function createData(id, name, due_date, completed_date, parent_task,start_date,t
 
 export default function Tasks() {
 const classes = useStyles();
-const [classicModal, setClassicModal] = React.useState(false);
+const [editData, setEditData] = React.useReducer(
+  (state,newState) => ({...state,...newState}),
+  {editFormData:null, classicModal:false}
+)
+// const [classicModal, setClassicModal] = React.useState(false);
 const [rows, updateRows] = React.useState([]);
-const [editFormData, setEditFormData] = React.useState(null);
+// const [editFormData, setEditFormData] = React.useState(null);
 
 useEffect(() => {
   refreshItems();
-})
+}, [rows.length])
 
 const closeModal = () => {
-  setClassicModal(false);
+  setEditData({classicModal:false});
   refreshItems();
 }
 
@@ -63,14 +67,11 @@ const editContent = (id) => {
       break;
     }
   }
-  if (formData) {
-    setEditFormData(formData);
-  }
 
-  // Save edit data to redux and use it from three
-  // that would be a way to go because using the data from the state may become cumbersome
-  
-  setClassicModal(true);
+
+  if (formData) {
+    setEditData({editFormData:formData, classicModal:true});
+  }
 }
 
 const deleteContent = (id) => {
@@ -98,7 +99,6 @@ const refreshItems = () => {
     }
   })
 }
-
     return (
         <>
         <div className={classes.titleContainer}>
@@ -113,7 +113,7 @@ const refreshItems = () => {
             className={classes.addBtn}
                   color="transparent"
                   block
-                  onClick={() => setClassicModal(true)}
+                  onClick={() => setEditData({classicModal:true})}
                 >
                   <AddIcon />
                 </Button>
@@ -177,10 +177,10 @@ const refreshItems = () => {
                     root: classes.center,
                     paper: classes.modal,
                   }}
-                  open={classicModal}
+                  open={editData.classicModal}
                   TransitionComponent={Transition}
                   keepMounted
-                  onClose={() => setClassicModal(false)}
+                  onClose={() => setEditData({classicModal:false})}
                   aria-labelledby="classic-modal-slide-title"
                   aria-describedby="classic-modal-slide-description"
                 >
@@ -194,7 +194,7 @@ const refreshItems = () => {
                       key="close"
                       aria-label="Close"
                       color="inherit"
-                      onClick={() => setClassicModal(false)}
+                      onClick={() => setEditData({classicModal:false})}
                     >
                       <Close className={classes.modalClose} />
                     </IconButton>
@@ -204,11 +204,12 @@ const refreshItems = () => {
                     id="classic-modal-slide-description"
                     className={classes.modalBody}
                   >
-                   <AddTaskForm closeModal={closeModal} formData={editFormData}/>
+                    
+                   <AddTaskForm closeModal={closeModal} formData={editData.editFormData}/>
                   </DialogContent>
                   <DialogActions className={classes.modalFooter}>
                     <Button
-                      onClick={() => setClassicModal(false)}
+                      onClick={() => setEditData({classicModal:false})}
                       color="danger"
                       simple
                     >

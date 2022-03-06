@@ -3,36 +3,51 @@ import { useFormik } from 'formik';
 import CustomInput from "components/CustomInput/CustomInput.js";
 import Button from "components/CustomButtons/Button.js";
 import axios from "axios";
+import {axiosWrapper}  from '../../../helpers/axios_wrapper'
 
 const AddTaskForm = ({closeModal, formData}) => {
     const formik = useFormik({
+      enableReinitialize:true,
         initialValues: {
-            name: formData.name,
-            due_date: formData.due_date,
-            time_spent: formData.time_spent
+            name: formData ? formData.name : '',
+            due_date: formData ? formData.due_date : '',
+            time_spent: formData ? formData.time_spent : '0'
         },
         onSubmit:(values,actions) => {
+          let method='POST';
           let fdata = {};
           let url = "http://localhost:8000/api/create_object";
           fdata.object_type = "task";
-          fdata.operation = 'create';
+          if (formData && formData.id) {
+            fdata.operation = 'update';
+          } else {
+            fdata.operation = 'create';
+          }
+          
           fdata.data = {
               "name": values.name,
               "due_date": values.due_date,
               "time_spent": values.time_spent
           };
-          console.log(formData);
-            axios({method: 'POST',url: url, data: fdata}).then((response) => {
-              if (response.data.status) {
-                // Close the modal and refresh items on page
-                closeModal();
-                actions.resetForm({
-                  name: '',
-                  due_date: '',
-                  time_spent: '0'
-                });
-              }
-            })
+          if (formData && formData.id) {
+            fdata.data.where_clause = {
+              'id': formData.id
+            }
+            method = "PUT";
+          }
+          axiosWrapper(method,url,fdata).then((response) => {
+            console.log("The modal close");
+            console.log(response);
+            if (response && response.data.status) {
+              // Close the modal and refresh items on page
+              closeModal();
+              actions.resetForm({
+                name: '',
+                due_date: '',
+                time_spent: '0'
+              });
+            }
+          });
         },
     });
     return (
