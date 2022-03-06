@@ -15,6 +15,7 @@ import Analysis from "views/Analysis/Analysis";
 import Task from "views/Task/Task";
 import { Provider } from "react-redux";
 import store from './redux/store';
+import TaskLog from "views/Task/TaskLog";
 
 var hist = createBrowserHistory();
 
@@ -30,6 +31,7 @@ ReactDOM.render(
             <Route path="/all" component={Components} />
             <Route path="/analysis" component={Analysis} />
             <Route path="/task" component={Task} />
+            <Route path="/task-log" component={TaskLog} />
             <Route path="/" component={Home} />
         </Switch>
     </Router>

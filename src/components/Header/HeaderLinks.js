@@ -49,18 +49,25 @@ export default function HeaderLinks(props) {
           ]}
         />
       </ListItem>
+
       <ListItem className={classes.listItem}>
-        <Button
-          href=""
-          color="transparent"
-          target="_blank"
-          className={classes.navLink}
-        >
-          <Link underline="none" color="black" to="/task">
-          Manage Task
-            </Link>
-          
-        </Button>
+        <CustomDropdown
+          noLiPadding
+          buttonText="Manage Tasks"
+          buttonProps={{
+            className: classes.navLink,
+            color: "transparent",
+          }}
+          buttonIcon={Apps}
+          dropdownList={[
+            <Link to="/task" className={classes.dropdownLink}>
+              Task
+            </Link>,
+            <Link to="/task-log" className={classes.dropdownLink}>
+            TaskLog
+          </Link>
+          ]}
+        />
       </ListItem>
         <ListItem className={classes.listItem}>
             <Button
