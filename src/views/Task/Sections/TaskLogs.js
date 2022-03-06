@@ -19,10 +19,13 @@ import AddTaskForm from "../Sections/addTaskForm";
 import axios from 'axios';
 import { constants } from 'constants/app';
 import {axiosWrapper} from '../../../helpers/axios_wrapper';
+import DynamicCrudForm from "./dynamicCrudForm";
 
 const show_fields = ["Description", "Time Spent", "Start Time", "End Time", "Created At"];
 const database_fields = ["description", "time_spent", "start_time", "end_time", "created_at"];
 const all_fields = [...database_fields, "id"];
+const form_type = "task_log";
+const form_name = "Task Log";
 
 
 const useStyles = makeStyles(styles);
@@ -215,14 +218,13 @@ const refreshItems = () => {
                     >
                       <Close className={classes.modalClose} />
                     </IconButton>
-                    <h4 className={classes.modalTitle}>Add Task</h4>
+                    <h4 className={classes.modalTitle}>Add Task Log</h4>
                   </DialogTitle>
                   <DialogContent
                     id="classic-modal-slide-description"
                     className={classes.modalBody}
                   >
-                    
-                   <AddTaskForm closeModal={closeModal} formData={editData.editFormData}/>
+                    <DynamicCrudForm closeModal={closeModal} form_type={form_type} formData={editData.editFormData} />
                   </DialogContent>
                   <DialogActions className={classes.modalFooter}>
                     <Button
