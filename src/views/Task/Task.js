@@ -17,7 +17,7 @@ export default function Task(props) {
     return (
         <div>
         <Header
-            color="primary"
+            color="warning"
             routes={dashboardRoutes}
             brand="ReadOn"
             rightLinks={<HeaderLinks />}

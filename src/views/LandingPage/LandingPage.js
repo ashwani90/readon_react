@@ -32,7 +32,7 @@ export default function LandingPage(props) {
   return (
     <div>
       <Header
-        color="transparent"
+        color="warning"
         routes={dashboardRoutes}
         brand="Material Kit React"
         rightLinks={<HeaderLinks />}

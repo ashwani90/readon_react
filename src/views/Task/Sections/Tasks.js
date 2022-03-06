@@ -23,6 +23,8 @@ import Datetime from "react-datetime";
 import AddTaskForm from "../Sections/addTaskForm";
 import LibraryBooks from "@material-ui/icons/LibraryBooks";
 import axios from 'axios';
+import { constants } from 'constants/app';
+import {axiosWrapper} from '../../../helpers/axios_wrapper';
 
 
 const useStyles = makeStyles(styles);
@@ -75,12 +77,26 @@ const editContent = (id) => {
 }
 
 const deleteContent = (id) => {
-  console.log(id);
+  let url = constants.API_URL;
+  let method = "get";
+  let fdata = {};
+  fdata.operation = "delete";
+  fdata.object_type = 'task';
+  fdata.data = {
+    "where_clause": {
+    }
+  };
+  axiosWrapper(method,url,fdata).then((response) => {
+    if (response && response.data.status) {
+      // refresh items on page
+      refreshItems();
+    }
+  });
 }
 
 const refreshItems = () => {
   
-  let url = "http://localhost:8000/api/create_object";
+  let url = constants.API_URL;
   let fdata = {};
   fdata.operation = "get";
   fdata.object_type = 'task';
